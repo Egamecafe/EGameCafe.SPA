@@ -1,5 +1,5 @@
 ﻿using EGameCafe.SPA.Data;
-using Laboratory.Client.SPA.Models;
+using EGameCafe.SPA.Models;
 using Newtonsoft.Json;
 using System;
 using System.Net;

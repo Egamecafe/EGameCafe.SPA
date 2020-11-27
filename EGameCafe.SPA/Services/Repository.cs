@@ -1,7 +1,7 @@
-﻿using EGameCafe.SPA.AccountServices.Services;
-using EGameCafe.SPA.Data;
+﻿using EGameCafe.SPA.Data;
 using EGameCafe.SPA.Extentions;
-using Laboratory.Client.SPA.Models;
+using EGameCafe.SPA.Models;
+using EGameCafe.SPA.Services.AccountService;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

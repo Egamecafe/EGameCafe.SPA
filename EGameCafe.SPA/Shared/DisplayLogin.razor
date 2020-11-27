@@ -1,0 +1,14 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <div style="display:flex ; justify-content:space-between; width: 100%">
+            <p class="mb-0">
+                welcome @context.User.Claims.FirstOrDefault(e => e.Type == JwtRegisteredClaimNames.FamilyName).Value
+            </p>
+            <a href="Logout">Log out</a>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Register">Register</a>
+        <a href="Login">Login</a>
+    </NotAuthorized>
+</AuthorizeView>

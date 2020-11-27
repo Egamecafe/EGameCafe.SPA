@@ -1,10 +1,28 @@
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        @if (Chats.Contains(routeData.PageType.Name.ToLower()))
+        {
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(ChatLayout)" />
+        }
+        else if (AuthPages.Contains(routeData.PageType.Name.ToLower()))
+        {
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(AuthLayout)" />
+        }
+        else
+        {
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        }
     </Found>
     <NotFound>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p>Sorry, there's nothing at this address.</p>
-        </LayoutView>
+        @*<CascadingAuthenticationState>*@
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        @*</CascadingAuthenticationState>*@
     </NotFound>
 </Router>
+
+@code{
+    public string[] AuthPages = new string[] { "login", "register", "getuserinfo", "otp" };
+    public string[] Chats = new string[] { "groupchat" };
+}

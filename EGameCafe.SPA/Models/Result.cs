@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Laboratory.Client.SPA.Models
+namespace EGameCafe.SPA.Models
 {
     public class Result
     {
@@ -17,6 +17,9 @@ namespace Laboratory.Client.SPA.Models
             Title = title;
             Id = id;
         }
+
+        internal Result() { }
+
 
         public bool Succeeded { get; set; }
         public string Title { get; set; }

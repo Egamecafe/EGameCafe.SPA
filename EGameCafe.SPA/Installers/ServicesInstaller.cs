@@ -1,6 +1,7 @@
-﻿using EGameCafe.SPA.AccountServices.Services;
-using EGameCafe.SPA.Installers;
+﻿using EGameCafe.SPA.Installers;
 using EGameCafe.SPA.Security;
+using EGameCafe.SPA.Services.AccountService;
+using EGameCafe.SPA.Services.ResponseServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,8 @@ namespace EGameCafe.SPA.Installers
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            services.AddScoped<IResponseService, ResponseService>();
 
             //services.AddScoped<IFileService, FileService>();
 

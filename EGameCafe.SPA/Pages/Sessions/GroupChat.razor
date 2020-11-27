@@ -1,0 +1,122 @@
+﻿@page "/groupchat"
+
+@inject NavigationManager NavigationManager
+@inject ICurrentUserService _currentUserService
+@implements IAsyncDisposable
+
+<section class="chat">
+    <div class="header-chat">
+        <i class="icon fa fa-user-o" aria-hidden="true"></i>
+        <p class="name">Megan Leib</p>
+        <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
+    </div>
+    <div class="messages-chat">
+
+        @foreach (var msg in messages)
+        {
+
+
+            @if (CurrentUserId != LastUserId)
+            {
+
+                <div class="message text-only">
+                    <div class="response">
+                        <p class="text"> @msg </p>
+                    </div>
+                </div>
+
+            }
+
+            @if (ChangeUserId)
+            {
+                <div class="message">
+                    <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
+                        <div class="online"></div>
+                    </div>
+                    <p class="text"> @msg </p>
+                </div>
+            }
+
+            else
+            {
+
+                <div class="message text-only">
+                    <p class="text"> @msg</p>
+                </div>
+                @*<p class="time"> 14h58</p>*@
+            }
+
+        }
+
+    </div>
+    <div class="footer-chat">
+        <i class="icon fa fa-smile-o clickable" style="font-size:25pt;" aria-hidden="true"></i>
+        <input @bind="messageInput" type="text" class="write-message" placeholder="Type your message here" />
+        <i @onclick="Send" class="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
+    </div>
+</section>
+
+@code{
+    private HubConnection hubConnection;
+    private List<string> messages = new List<string>();
+    private string userInput;
+    private string messageInput;
+    private string groupName;
+
+    private bool ChangeUserId;
+    private string CurrentUserId;
+    private string LastUserId;
+
+    protected override void OnInitialized()
+    {
+        Random _rand = new Random();
+        CurrentUserId = _rand.Next(100, 1000000).ToString();
+        groupName = "gp1";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
+            .Build();
+
+        hubConnection.On<string, string>("Send", (userId, message) =>
+        {
+            var encodedMsg = $"{message}";
+
+            messages.Add(encodedMsg);
+
+            if (userId != LastUserId)
+            {
+                ChangeUserId = true;
+            }
+
+            else ChangeUserId = false;
+
+            LastUserId = userId;
+
+            StateHasChanged();
+        });
+
+
+        //CurrentUserId = await _currentUserService.GetUserId();
+
+        await hubConnection.StartAsync();
+
+        await AddToGroup();
+    }
+
+    Task Send() =>
+        hubConnection.SendAsync("SendMessageToGroup", groupName, CurrentUserId, messageInput);
+
+    Task AddToGroup() =>
+        hubConnection.SendAsync("AddToGroup", groupName);
+
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+}

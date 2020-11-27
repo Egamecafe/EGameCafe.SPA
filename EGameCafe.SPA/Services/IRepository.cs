@@ -1,4 +1,4 @@
-﻿using Laboratory.Client.SPA.Models;
+﻿using EGameCafe.SPA.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

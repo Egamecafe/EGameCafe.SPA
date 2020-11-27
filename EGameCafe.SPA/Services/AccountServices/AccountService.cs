@@ -2,7 +2,6 @@
 using EGameCafe.SPA.Extentions;
 using EGameCafe.SPA.Models;
 using EGameCafe.SPA.Security;
-using Laboratory.Client.SPA.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EGameCafe.SPA.AccountServices.Services
+namespace EGameCafe.SPA.Services.AccountService
 {
     public class AccountService : IAccountService
     {
@@ -34,14 +33,19 @@ namespace EGameCafe.SPA.AccountServices.Services
             {
                 var registerAsJson = JsonConvert.SerializeObject(registerModel);
 
-                var response = await httpClient.PostAsync("api/Account/Register",
+                var response = await httpClient.PostAsync("api/v1/OAuth/Register",
                     new StringContent(registerAsJson, Encoding.UTF8, "application/json"));
 
                 var result = JsonConvert.DeserializeObject<Result>(await response.Content.ReadAsStringAsync());
 
+                if(result.Succeeded)
+                {
+                    await _currentUser.SetEmail(registerModel.Email);
+                }
+
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
             }
@@ -53,7 +57,7 @@ namespace EGameCafe.SPA.AccountServices.Services
             {
                 var loginAsJson = JsonConvert.SerializeObject(loginModel);
 
-                var response = await httpClient.PostAsync("api/Account/login",
+                var response = await httpClient.PostAsync("api/v1/OAuth/Login",
                     new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
 
                 var loginResult = JsonConvert.DeserializeObject<AuthenticationResult>(await response.Content.ReadAsStringAsync());
@@ -82,7 +86,7 @@ namespace EGameCafe.SPA.AccountServices.Services
             };
             var loginAsJson = JsonConvert.SerializeObject(refreshToken);
 
-            var response = await httpClient.PostAsync("api/Account/RefreshToken",
+            var response = await httpClient.PostAsync("api/v1/OAuth/RefreshToken",
                 new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
 
             var result = JsonConvert.DeserializeObject<AuthenticationResult>(await response.Content.ReadAsStringAsync());
@@ -99,32 +103,56 @@ namespace EGameCafe.SPA.AccountServices.Services
         {
             var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/Account/SendAccountConfirmationTokenAgain",
+            var response = await httpClient.PostAsync("api/v1/OAuth/SendAccountConfirmationTokenAgain",
                 new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
             return await response.DeserializeResponseMessageStatus();
         }
 
-        public async Task<Result> ConfirmedOTP(OTPConfirmationModel otpModel)
+        public async Task<Result> AccountConfirmedOTP(int randomNumber)
         {
-            var loginAsJson = JsonConvert.SerializeObject(otpModel);
+            try
+            {
+                var email = await _currentUser.GetEmail();
 
-            var response = await httpClient.PostAsync("api/Account/AccountOTPConfirmation",
-                new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+                OTPConfirmationModel otpModel = new()
+                {
+                    RandomNumber = randomNumber,
+                    Email = email
+                };
 
-            return await response.DeserializeResponseMessageStatus();
+                var loginAsJson = JsonConvert.SerializeObject(otpModel);
+
+                var response = await httpClient.PostAsync("api/v1/OAuth/AccountOTPConfirmation",
+                    new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+
+                var loginResult = JsonConvert.DeserializeObject<AuthenticationResult>(await response.Content.ReadAsStringAsync());
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result.Failure(loginResult.EnError, loginResult.FaError);
+                }
+
+                await SetAuthentication(loginResult.Token, loginResult.RefreshToken);
+
+                return Result.Success();
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
         }
 
         public async Task<Result> ForgotPassword(ForgotPasswordModel model)
         {
             var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/Account/ForgotPassword",
+            var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPassword",
                 new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
             var result = await response.DeserializeResponseMessageStatus(); ;
 
-            if(result.Succeeded) await _currentUser.SetUsername(model.Email);
+            if (result.Succeeded) await _currentUser.SetUsername(model.Email);
 
             return result;
         }
@@ -141,7 +169,7 @@ namespace EGameCafe.SPA.AccountServices.Services
 
             var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/Account/ForgotPasswordOTPConfirmation",
+            var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPasswordOTPConfirmation",
                 new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
             await _currentUser.SetEmail(model.Email);
@@ -151,13 +179,13 @@ namespace EGameCafe.SPA.AccountServices.Services
 
         public async Task<Result> ResetPassword(string password)
         {
-            var email  = await _currentUser.GetEmail();
+            var email = await _currentUser.GetEmail();
 
             ResetPasswordModel model = new() { Email = email, Password = password };
 
             var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/Account/ResetPassword",
+            var response = await httpClient.PostAsync("api/v1/OAuth/ResetPassword",
                 new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
             return await response.DeserializeResponseMessageStatus();

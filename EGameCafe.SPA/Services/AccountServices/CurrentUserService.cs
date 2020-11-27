@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EGameCafe.SPA.AccountServices.Services
+namespace EGameCafe.SPA.Services.AccountService
 {
     public class CurrentUserService : ICurrentUserService
     {

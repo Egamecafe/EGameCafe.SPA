@@ -1,0 +1,100 @@
+﻿@page "/register"
+@inject IRegisterVm ViewModel
+
+    <style>
+        .validation-message {
+            text-align: left;
+            padding-left: 25px;
+        }
+
+        .alert-danger {
+            text-align: left;
+            color: #ff172d;
+            background-color: #141519;
+            border: none;
+            padding-left: 40px;
+            margin-bottom: 0 !important;
+        }
+
+        .panel .login-input {
+            margin-top: 10px;
+            background-color: #22232a;
+            -webkit-border-radius: 45px;
+            -moz-border-radius: 45px;
+            border-radius: 45px;
+            font-size: 15px;
+            height: 45px;
+            border: none;
+            padding-left: 15px;
+            width: 330px;
+            margin-bottom: 10px;
+        }
+
+        .panel .login-input {
+            color: #656d79;
+            font-size: 15px;
+            font-weight: 500;
+        }
+    </style>
+
+
+    <div class="panel">
+        <div class="state">
+            <br /><i class="fa fa-user"></i><br />
+            <h1>Join</h1>
+            <h1>Egame Cafe</h1>
+        </div>
+        <br><br />
+
+        <DisplayNotification Notification="ViewModel.Notification" />
+
+        <EditForm Model="ViewModel" OnValidSubmit="HandleRegister" class="form">
+            <FluentValidator></FluentValidator>
+
+            <ValidationMessage For="@(() => ViewModel.Fullname)" />
+            <InputText @bind-Value="ViewModel.Fullname" class="login-input" placeholder="Full Name" type="text" />
+
+            <ValidationMessage For="@(() => ViewModel.Item.Username)" />
+            <InputText @bind-Value="ViewModel.Item.Username" class="login-input" placeholder="Username" type="text" />
+
+            <ValidationMessage For="@(() => ViewModel.Item.Email)" />
+            <InputText @bind-Value="ViewModel.Item.Email" class="login-input" placeholder="Email" type="text" />
+
+            <ValidationMessage For="@(() => ViewModel.Item.PhoneNumber)" />
+            <InputText @bind-Value="ViewModel.Item.PhoneNumber" class="login-input" placeholder="Phone Number" type="text" />
+
+            <ValidationMessage For="@(() => ViewModel.Item.Password)" />
+            <InputText @bind-Value="ViewModel.Item.Password" class="login-input" placeholder="Password" type="password" />
+
+
+            <button type="submit" class="login">Sign Up</button>
+        </EditForm>
+
+
+
+    </div>
+    @code {
+        protected override void OnInitialized()
+        {
+            ViewModel.PropertyChanged += async (sender, e) =>
+            {
+                await InvokeAsync(() =>
+                {
+                    StateHasChanged();
+                });
+            };
+        }
+
+        async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }
+
+        protected async Task HandleRegister()
+        {
+            await ViewModel.HandleRegister(ViewModel.Item);
+        }
+    }

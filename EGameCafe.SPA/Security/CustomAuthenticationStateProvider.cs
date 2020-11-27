@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
-using EGameCafe.SPA.AccountServices.Services;
 using EGameCafe.SPA.Services;
+using EGameCafe.SPA.Services.AccountService;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;

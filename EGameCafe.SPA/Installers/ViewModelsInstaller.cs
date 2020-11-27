@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using EGameCafe.SPA.ViewModels;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ namespace EGameCafe.SPA.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddScoped<IAddSamplingTimeVm, AddSamplingTimeVm>();
-
+            services.AddScoped<ILoginVm, LoginVm>();
+            services.AddScoped<IRegisterVm, RegisterVm>();
+            services.AddScoped<IOTPVm, OTPVm>();
         }
     }
 }

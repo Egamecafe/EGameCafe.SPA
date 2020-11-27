@@ -1,12 +1,11 @@
 ﻿using EGameCafe.SPA.Models;
-using Laboratory.Client.SPA.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EGameCafe.SPA.AccountServices.Services
+namespace EGameCafe.SPA.Services.AccountService
 {
     public interface IAccountService
     {
@@ -14,7 +13,7 @@ namespace EGameCafe.SPA.AccountServices.Services
         Task<Result> Login(LoginModel loginModel);
         Task<AuthenticationResult> RefreshTokenAsync();
         Task<Result> SendOTPAgain(SendOTPAgainModel model);
-        Task<Result> ConfirmedOTP(OTPConfirmationModel otpModel);
+        Task<Result> AccountConfirmedOTP(int randomNumber);
         Task<Result> ForgotPassword(ForgotPasswordModel model);
         Task<Result> ForgotPasswordOTPConfirmation(int randomNumber);
         Task<Result> ResetPassword(string password);

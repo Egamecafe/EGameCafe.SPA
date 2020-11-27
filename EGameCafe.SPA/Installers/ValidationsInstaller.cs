@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using EGameCafe.SPA.Validations;
+using EGameCafe.SPA.ViewModels;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,8 +15,9 @@ namespace EGameCafe.SPA.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddTransient<IValidator<AddSamplingTimeVm>, SamplingTimePickerValidation>();
-            
+            services.AddTransient<IValidator<LoginVm>, LoginVmValidation>();
+            services.AddTransient<IValidator<RegisterVm>, RegisterVmValidation>();
+            services.AddTransient<IValidator<OTPVm>, OTPValidation>();
         }
     }
 }

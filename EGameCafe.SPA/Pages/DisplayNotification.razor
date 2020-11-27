@@ -1,0 +1,16 @@
+﻿@if (Notification.IsShow)
+{
+    <div class="alert @Notification.Type mt-3 mb-4" role="alert">
+        <p>@Notification.Message</p>
+    </div>
+}
+else
+{
+    <div class="container-fluid" style="height: 39pt"></div>
+}
+
+
+@code {
+    [Parameter]
+    public NotificationModel Notification { get; set; }
+}

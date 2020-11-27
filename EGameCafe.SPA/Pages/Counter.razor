@@ -1,6 +1,5 @@
 ﻿@page "/counter"
 
-@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
@@ -41,21 +40,21 @@
     private string messageInput;
     private string groupName;
 
-    protected override async Task OnInitializedAsync()
-    {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
-            .Build();
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    hubConnection = new HubConnectionBuilder()
+    //        .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
+    //        .Build();
 
-        hubConnection.On<string>("Send", (message) =>
-        {
-            var encodedMsg = $"{message}";
-            messages.Add(encodedMsg);
-            StateHasChanged();
-        });
+    //    hubConnection.On<string>("Send", (message) =>
+    //    {
+    //        var encodedMsg = $"{message}";
+    //        messages.Add(encodedMsg);
+    //        StateHasChanged();
+    //    });
 
-        await hubConnection.StartAsync();
-    }
+    //    await hubConnection.StartAsync();
+    //}
 
     Task Send() =>
         hubConnection.SendAsync("SendMessageToGroup", groupName, messageInput);
