@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.Services
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository : IRepository
     {
         private readonly HttpClient _httpClient;
         private readonly ICurrentUserService _currentUser;
@@ -23,7 +23,7 @@ namespace EGameCafe.SPA.Services
             _currentUser = currentUser;
         }
 
-        public async Task<Result> AuthorizePostAsync(T command, string rout)
+        public async Task<Result> AuthorizePostAsync<T>(T command, string rout)
         {
             try
             {
@@ -48,6 +48,36 @@ namespace EGameCafe.SPA.Services
             catch (Exception)
             {
                 return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
+        }
+
+        public async Task<(Result Result, T ResultVm)> AuthorizeGetAsync<T>(string rout)
+        {
+            try
+            {
+
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, rout);
+
+                var token = await _currentUser.GetAuthToken();
+
+                requestMessage.Headers.Authorization
+                    = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(requestMessage);
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return (response.HandleGetMethodErrors().Result, default(T));
+                }
+
+                var addresses = JsonConvert.DeserializeObject<T>(responseBody);
+
+                return (Result.Success(), addresses);
+            }
+            catch (Exception ex)
+            {
+                return (CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد"), default(T));
             }
         }
     }

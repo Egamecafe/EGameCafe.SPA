@@ -1,4 +1,5 @@
-﻿using EGameCafe.SPA.Validations;
+﻿using EGameCafe.SPA.Models;
+using EGameCafe.SPA.Validations;
 using EGameCafe.SPA.ViewModels;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,8 @@ namespace EGameCafe.SPA.Installers
             services.AddTransient<IValidator<LoginVm>, LoginVmValidation>();
             services.AddTransient<IValidator<RegisterVm>, RegisterVmValidation>();
             services.AddTransient<IValidator<OTPVm>, OTPValidation>();
+            services.AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordValidation>();
+            services.AddTransient<IValidator<ResetPasswordVm>, ResetPasswordValodation>();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace EGameCafe.SPA.Installers
             services.AddScoped<ILoginVm, LoginVm>();
             services.AddScoped<IRegisterVm, RegisterVm>();
             services.AddScoped<IOTPVm, OTPVm>();
+            services.AddScoped<IChatVm, ChatVm>();
+            services.AddScoped<IResetPasswordVm, ResetPasswordVm>();
         }
     }
 }

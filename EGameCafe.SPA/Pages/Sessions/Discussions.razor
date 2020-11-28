@@ -1,0 +1,50 @@
+﻿@inject IJSRuntime JsRuntime
+
+<section class="discussions">
+    <div class="discussion search">
+        <div class="searchbar">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="text" placeholder="Search..." />
+        </div>
+    </div>
+
+    @if (List is not null)
+    {
+        @if (List.Any())
+        {
+            foreach (var item in List)
+            {
+                <div class="discussion-background">
+                    <div class="discussion" @onclick="@(()=>OnChatClick(item.GamingGroupGroupId))">
+                        <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
+                            <div class="online"></div>
+                        </div>
+                        <div class="desc-contact">
+                            <p class="name">@item.GroupName</p>
+                            @*<p class="message">9 pm at the bar if possible 😳</p>*@
+                        </div>
+                        <div class="timer">12 sec</div>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+</section>
+
+@code{
+    [Parameter]
+    public IList<GetAllGroupsDto> List { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueClicked { get; set; }
+
+    private Task OnChatClick(string groupId)
+    {
+        return ValueClicked.InvokeAsync(groupId);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("changeTabActiveClassOnClick", ".discussion", "message-active");
+    }
+}

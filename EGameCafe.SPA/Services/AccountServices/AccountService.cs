@@ -38,7 +38,7 @@ namespace EGameCafe.SPA.Services.AccountService
 
                 var result = JsonConvert.DeserializeObject<Result>(await response.Content.ReadAsStringAsync());
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     await _currentUser.SetEmail(registerModel.Email);
                 }
@@ -77,26 +77,35 @@ namespace EGameCafe.SPA.Services.AccountService
             }
         }
 
-        public async Task<AuthenticationResult> RefreshTokenAsync()
+        public async Task<Result> RefreshTokenAsync()
         {
-            var refreshToken = new RefreshTokenModel()
+            try
             {
-                RefreshToken = await _currentUser.GetAuthRefreshToken(),
-                Token = await _currentUser.GetAuthToken()
-            };
-            var loginAsJson = JsonConvert.SerializeObject(refreshToken);
+                var refreshToken = new RefreshTokenModel()
+                {
+                    RefreshToken = await _currentUser.GetAuthRefreshToken(),
+                    Token = await _currentUser.GetAuthToken()
+                };
+                var loginAsJson = JsonConvert.SerializeObject(refreshToken);
 
-            var response = await httpClient.PostAsync("api/v1/OAuth/RefreshToken",
-                new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+                var response = await httpClient.PostAsync("api/v1/OAuth/RefreshToken",
+                    new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
 
-            var result = JsonConvert.DeserializeObject<AuthenticationResult>(await response.Content.ReadAsStringAsync());
+                var result = JsonConvert.DeserializeObject<AuthenticationResult>(await response.Content.ReadAsStringAsync());
 
-            if (response.IsSuccessStatusCode)
-            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result.Failure(result.EnError, result.FaError);
+                }
+
                 await SetAuthentication(result.Token, result.RefreshToken);
-            }
 
-            return result;
+                return Result.Success();
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
         }
 
         public async Task<Result> SendOTPAgain(SendOTPAgainModel model)
@@ -145,50 +154,71 @@ namespace EGameCafe.SPA.Services.AccountService
 
         public async Task<Result> ForgotPassword(ForgotPasswordModel model)
         {
-            var usernameAsJson = JsonConvert.SerializeObject(model);
+            try
+            {
+                var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPassword",
-                new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
+                var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPassword",
+                    new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
-            var result = await response.DeserializeResponseMessageStatus(); ;
+                var result = await response.DeserializeResponseMessageStatus(); ;
 
-            if (result.Succeeded) await _currentUser.SetUsername(model.Email);
+                if (result.Succeeded) await _currentUser.SetEmail(model.Email);
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
         }
 
         public async Task<Result> ForgotPasswordOTPConfirmation(int randomNumber)
         {
-            var email = await _currentUser.GetEmail();
-
-            OTPConfirmationModel model = new()
+            try
             {
-                RandomNumber = randomNumber,
-                Email = email
-            };
+                var email = await _currentUser.GetEmail();
 
-            var usernameAsJson = JsonConvert.SerializeObject(model);
+                OTPConfirmationModel model = new()
+                {
+                    RandomNumber = randomNumber,
+                    Email = email
+                };
 
-            var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPasswordOTPConfirmation",
-                new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
+                var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            await _currentUser.SetEmail(model.Email);
+                var response = await httpClient.PostAsync("api/v1/OAuth/ForgotPasswordOTPConfirmation",
+                    new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
-            return await response.DeserializeResponseMessageStatus();
+                await _currentUser.SetEmail(model.Email);
+
+                return await response.DeserializeResponseMessageStatus();
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
         }
 
         public async Task<Result> ResetPassword(string password)
         {
-            var email = await _currentUser.GetEmail();
+            try
+            {
+                var email = await _currentUser.GetEmail();
 
-            ResetPasswordModel model = new() { Email = email, Password = password };
+                ResetPasswordModel model = new() { Email = email, Password = password };
 
-            var usernameAsJson = JsonConvert.SerializeObject(model);
+                var usernameAsJson = JsonConvert.SerializeObject(model);
 
-            var response = await httpClient.PostAsync("api/v1/OAuth/ResetPassword",
-                new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
+                var response = await httpClient.PostAsync("api/v1/OAuth/ResetPassword",
+                    new StringContent(usernameAsJson, Encoding.UTF8, "application/json"));
 
-            return await response.DeserializeResponseMessageStatus();
+                return await response.DeserializeResponseMessageStatus();
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
         }
 
         public async Task Logout()

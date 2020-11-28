@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager _navigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +9,7 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <DisplayLogin/>
+            <DisplayLogin />
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -16,3 +18,17 @@
         </div>
     </div>
 </div>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/login");
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using EGameCafe.SPA.Installers;
 using EGameCafe.SPA.Security;
+using EGameCafe.SPA.Services;
 using EGameCafe.SPA.Services.AccountService;
 using EGameCafe.SPA.Services.ResponseServices;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -27,7 +28,10 @@ namespace EGameCafe.SPA.Installers
 
             services.AddScoped<IResponseService, ResponseService>();
 
-            //services.AddScoped<IFileService, FileService>();
+            services.AddHttpClient<IRepository, Repository>(config =>
+            {
+                config.BaseAddress = new Uri(URL);
+            });
 
             services.AddHttpClient<IAccountService, AccountService > (config =>
             {

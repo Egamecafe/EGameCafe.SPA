@@ -1,0 +1,42 @@
+﻿@page "/chat"
+
+
+@inject IChatVm ViewModel
+
+
+<Discussions List="ViewModel.Item.List" ValueClicked="@((e)=>OnChatClickChanged(e))" />
+
+
+<GroupChat GroupId="@ViewModel.CurrentGroupId" />
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.HandleGetGroups();
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    protected void OnChatClickChanged(string groupId)
+    {
+        ViewModel.CurrentGroupId = groupId;
+    }
+}

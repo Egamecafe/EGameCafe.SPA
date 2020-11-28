@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.Services
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository
     {
-        Task<Result> AuthorizePostAsync(T command, string rout);
+        Task<Result> AuthorizePostAsync<T>(T command, string rout);
+        Task<(Result Result, T ResultVm)> AuthorizeGetAsync<T>(string rout);
     }
 }
