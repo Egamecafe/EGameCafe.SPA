@@ -11,7 +11,7 @@ namespace EGameCafe.SPA.Services.AccountService
     {
         Task<Result> CreateUserAsync(RegisterModel registerModel);
         Task<Result> Login(LoginModel loginModel);
-        Task<AuthenticationResult> RefreshTokenAsync();
+        Task<Result> RefreshTokenAsync();
         Task<Result> SendOTPAgain(SendOTPAgainModel model);
         Task<Result> AccountConfirmedOTP(int randomNumber);
         Task<Result> ForgotPassword(ForgotPasswordModel model);

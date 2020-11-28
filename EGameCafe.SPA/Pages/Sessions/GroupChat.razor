@@ -1,5 +1,4 @@
-﻿@page "/groupchat"
-
+﻿
 @inject NavigationManager NavigationManager
 @inject ICurrentUserService _currentUserService
 @implements IAsyncDisposable
@@ -15,36 +14,33 @@
         @foreach (var msg in messages)
         {
 
-
-            @if (CurrentUserId != LastUserId)
+            if (msg.UserId == CurrentUserId)
             {
-
                 <div class="message text-only">
                     <div class="response">
-                        <p class="text"> @msg </p>
+                        <p class="text"> @msg.MessageText </p>
                     </div>
                 </div>
-
             }
 
-            @if (ChangeUserId)
+            else if (msg.WithImage)
             {
                 <div class="message">
                     <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
                         <div class="online"></div>
                     </div>
-                    <p class="text"> @msg </p>
+                    <p class="text"> @msg.MessageText </p>
                 </div>
             }
 
-            else
+            else if (CurrentUserId != msg.UserId)
             {
-
                 <div class="message text-only">
-                    <p class="text"> @msg</p>
+                    <p class="text"> @msg.MessageText</p>
                 </div>
                 @*<p class="time"> 14h58</p>*@
             }
+
 
         }
 
@@ -52,16 +48,30 @@
     <div class="footer-chat">
         <i class="icon fa fa-smile-o clickable" style="font-size:25pt;" aria-hidden="true"></i>
         <input @bind="messageInput" type="text" class="write-message" placeholder="Type your message here" />
-        <i @onclick="Send" class="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
+        <i @onclick="@(()=>{ AddToGroup(); Send();})" class="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
     </div>
 </section>
 
 @code{
+
+    private string groupId;
+
+    [Parameter]
+    public string GroupId
+    {
+        get => groupId;
+        set
+        {
+            groupId = value;
+            messages.Clear();
+        }
+    }
+
     private HubConnection hubConnection;
-    private List<string> messages = new List<string>();
+    private List<ChatMessageModel> messages = new List<ChatMessageModel>();
     private string userInput;
     private string messageInput;
-    private string groupName;
+
 
     private bool ChangeUserId;
     private string CurrentUserId;
@@ -71,7 +81,6 @@
     {
         Random _rand = new Random();
         CurrentUserId = _rand.Next(100, 1000000).ToString();
-        groupName = "gp1";
     }
 
     protected override async Task OnInitializedAsync()
@@ -84,14 +93,18 @@
         {
             var encodedMsg = $"{message}";
 
-            messages.Add(encodedMsg);
-
-            if (userId != LastUserId)
+            ChatMessageModel msg = new()
             {
-                ChangeUserId = true;
+                MessageText = encodedMsg,
+                UserId = userId
+            };
+
+            if (LastUserId != userId && userId != CurrentUserId)
+            {
+                msg.WithImage = true;
             }
 
-            else ChangeUserId = false;
+            messages.Add(msg);
 
             LastUserId = userId;
 
@@ -103,14 +116,13 @@
 
         await hubConnection.StartAsync();
 
-        await AddToGroup();
     }
 
     Task Send() =>
-        hubConnection.SendAsync("SendMessageToGroup", groupName, CurrentUserId, messageInput);
+        hubConnection.SendAsync("SendMessageToGroup", GroupId, CurrentUserId, messageInput);
 
     Task AddToGroup() =>
-        hubConnection.SendAsync("AddToGroup", groupName);
+        hubConnection.SendAsync("AddToGroup", GroupId);
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;

@@ -1,6 +1,22 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager _navigationManager 
 
 <link href="css/background.css" rel="stylesheet" />
 
-
 @Body
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+}

@@ -110,7 +110,7 @@ namespace EGameCafe.SPA.ViewModels
             }
             else
             {
-                _navigationManager.NavigateTo("/login", true);
+                _navigationManager.NavigateTo("/resetpassword", true);
             }
         }
 
