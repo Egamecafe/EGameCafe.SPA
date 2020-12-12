@@ -13,7 +13,7 @@
         background-color: #141519;
         border: none;
         padding-left: 40px;
-        margin-bottom:0 !important;
+        margin-bottom: 0 !important;
     }
 
     .panel .login-input {
@@ -32,16 +32,18 @@
         margin-bottom: 10px;
     }
 
-        .panel .login-input[placeholder] {
-            color: #656d79;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
+    .panel .login-input[placeholder] {
+        color: #656d79;
+        font-size: 15px;
+        font-weight: 500;
+    }
 </style>
 
 <div class="panel">
-    <div class="state"><br><i class="fa fa-unlock-alt"></i><br><h2>Welcome To</h2><h2>Egame Cafe</h2></div>
+    <div class="state"><br><i class="fa fa-unlock-alt"></i><br>
+        <h2>Welcome To</h2>
+        <h2>Egame Cafe</h2>
+    </div>
 
     <DisplayNotification Notification="ViewModel.Notification" />
 
@@ -50,28 +52,30 @@
 
         <div class="form">
             <ValidationMessage For="@(() => ViewModel.Item.Username)" />
-            <InputText @bind-Value="ViewModel.Item.Username" class="login-input" placeholder='Email or Username' type="text" />
+            <InputText @bind-Value="ViewModel.Item.Username" class="login-input" placeholder='Email or Username'
+                type="text" />
 
             <ValidationMessage For="@(() => ViewModel.Item.Password)" />
-            <InputText @bind-Value="ViewModel.Item.Password" class="login-input" placeholder='Password' type="password" />
+            <InputText @bind-Value="ViewModel.Item.Password" class="login-input" placeholder='Password'
+                type="password" />
 
             <button type="submit" class="login">Login</button>
         </div>
 
         <div class="fack"><a href="forgotpassword"><i class="fa fa-question-circle"></i>Forgot password?</a></div>
+        <div class="fack"><a href="register"><i class="fa fa-user"></i>Join us!</a></div>
     </EditForm>
 
 </div>
 
 @code {
-
     protected override void OnInitialized()
     {
         ViewModel.PropertyChanged += async (sender, e) =>
         {
             await InvokeAsync(() =>
             {
-                StateHasChanged();
+    StateHasChanged();
             });
         };
     }
