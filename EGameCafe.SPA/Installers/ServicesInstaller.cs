@@ -17,8 +17,10 @@ namespace EGameCafe.SPA.Installers
     public class ServicesInstaller : IInstaller
     {
         //private readonly string URL = "https://drtalachilabapi.azurewebsites.net";
-        private readonly string URL = "https://localhost:44376";
-        //private readonly string URL = "http://95.216.55.253:5000";
+        // private readonly string URL = "https://localhost:44376";
+        // private readonly string URL = "http://95.216.55.253:5000";
+        private readonly string URL = "http://localhost:5000";
+        
 
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
