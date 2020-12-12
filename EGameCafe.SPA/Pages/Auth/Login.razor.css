@@ -76,7 +76,7 @@
 }
 
 .panel .login:hover {
-	background-color: #599b2d;
+	background-color: #920000;
 }
 
 .panel .login:after {
@@ -85,11 +85,11 @@
 	position: absolute;
 	width: 45px;
 	height: 45px;
-	background-color: #599b2d;
+	background-color: #cc0000;
 	color: yellow;
-	text-shadow: 1px -1px #467a23, 2px -2px #487d24, 3px -3px #4a8025,
-		4px -4px #4b8326, 5px -5px #4d8627, 6px -6px #4f8928, 7px -7px #508c28,
-		8px -8px #528f29, 9px -9px #54922a, 10px -10px #55952b, 11px -11px #57982c;
+	text-shadow: 1px -1px #cc0000, 2px -2px #cc0000, 3px -3px #cc0000,
+		4px -4px #cc0000, 5px -5px #cc0000, 6px -6px #cc0000, 7px -7px #cc0000,
+		8px -8px #cc0000, 9px -9px #cc0000, 10px -10px #cc0000, 11px -11px #cc0000;
 	left: 0;
 	top: 0;
 	-webkit-transform: rotate(90deg);
