@@ -1,0 +1,9 @@
+﻿#creategroup-section {
+    width: 60%;
+    padding: 20px;
+}
+
+.card-body-active {
+    background: #007bff !important;
+    color:white !important;
+}

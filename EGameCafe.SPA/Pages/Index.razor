@@ -1,10 +1,148 @@
 ﻿@page "/"
 
+
 <AuthorizeView>
     <Authorized>
-        <h1>Hiii</h1>
+        <section class="row">
+
+            <div class="col-sm-3 pt-4">
+                <div class="panel p-2">
+                    <button class="edit-btn" style="margin-left: -250px;"><i class="fa fa-pencil"></i></button>
+                    <div class="profile-card__img mt-5">
+                        <img height="150px"
+                             width="150px"
+                             src=""
+                             alt="profile card" />
+                    </div>
+                    <div style="
+					text-align: center;
+					color: yellow;
+					margin-top: -40px;
+					font-size: xx-large;
+				">
+                        Username
+                    </div>
+                    <div style="text-align: center; color: yellow; margin-top: 20px">
+                        Joined on Feb 2020
+                    </div>
+                    <br />
+                    <div style="font-size: x-large; color: yellow; margin-top: 20px; overflow: hidden;">
+                        <hr style="border: 1px solid yellow; border-radius: 50%; margin: 0 30px 30px 30px;">
+                        <button class="edit-btn"><i class="fa fa-pencil"></i></button>
+                        something about me
+                    </div>
+                </div>
+            </div>
+
+            <div class="activity-body col-sm-4 pt-4">
+                @*<h2 style="color: black">Activity Feed</h2>*@
+                <ol class="activity-feed">
+                    @*<div>
+                    <button class="add-btn"><i class="fa fa-plus"></i></button>
+                    <input placeholder="Add an activity..." type="text" />
+                </div>*@
+                    <li class="feed-item">
+                        <div class="image">
+                            <img height="38px"
+                                 width="38px"
+                                 src=""
+                                 alt="profile card" />
+                        </div>
+                        <time class="date" datetime="9-25">Sep 25</time>
+                        <span class="text">
+                            Responded to need
+                            >
+                        </span>
+                    </li>
+                    <li class="feed-item">
+                        <div class="image">
+                            <img height="38px"
+                                 width="38px"
+                                 src=""
+                                 alt="profile card" />
+                        </div>
+                        <time class="date" datetime="9-24">Sep 24</time>
+                        <span class="text">Added an interest “Volunteer Activities”</span>
+                    </li>
+                    <li class="feed-item">
+                        <div class="image">
+                            <img height="38px"
+                                 width="38px"
+                                 src=""
+                                 alt="profile card" />
+                        </div>
+                        <time class="date" datetime="9-23">Sep 23</time>
+                        <span class="text">Joined the group</span>
+                    </li>
+                </ol>
+            </div>
+
+
+            <div class="mycontainer col-sm-5">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card__container">
+                            <div class="card__media" style="color: yellow">
+                                Games I've Played
+                                <br /><br />
+                                <i class="fa fa-gamepad"></i>
+                                <button class="edit-btn"><i class="fa fa-pencil"></i></button>
+                            </div>
+                            <div class="card__body">
+                                <div class="card__title">Games</div>
+                                <ul>
+                                    <li>Dota2</li>
+                                    <li>R6</li>
+                                    <li>WITCHER</li>
+                                    <li>APEX</li>
+                                    <li>RED DEAD</li>
+                                    <li>GTA</li>
+                                    <li>CYBERPUNK</li>
+                                    <li>BATMAN</li>
+                                    <li>PUBG</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card__container">
+                            <div class="card__media" style="color: yellow">
+                                My Friends
+                                <br /><br />
+                                <i class="fa fa-steam"></i>
+                            </div>
+                            <div class="card__body">
+                                <div class="card__title">Friends</div>
+                                <ul>
+                                    <li>mamad</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card__container">
+                            <div class="card__media" style="color: yellow">
+                                My System
+                                <br /><br />
+                                <i class="fa fa-cogs"></i>
+                                <button class="edit-btn"><i class="fa fa-pencil"></i></button>
+                            </div>
+                            <div class="card__body">
+                                <div class="card__title">System Specifications</div>
+                                <ul>
+                                    <li>RTX 3090</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
     </Authorized>
     <NotAuthorized>
         <h1>not authorized</h1>
     </NotAuthorized>
 </AuthorizeView>
+

@@ -36,3 +36,16 @@
         background-color: #4f6ebd;
         color: #cfe5ff;
     }
+
+a, .btn-link {
+    color: #9fb5ef !important;
+}
+
+.nav-link {
+    color: #9fb5ef !important;
+}
+
+
+.item .active {
+    color: white;
+}

@@ -1,18 +1,15 @@
-﻿using EGameCafe.SPA.Enums;
-using EGameCafe.SPA.Models;
+﻿using EGameCafe.SPA.Models;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.ViewModels
 {
-    public interface IChatVm
+    public interface IGroupInfoVm
     {
         event PropertyChangedEventHandler PropertyChanged;
-        GetAllGroupsDto CurrentGroup { get; set; }
         string PageUri { get; set; }
         NotificationModel Notification { get; set; }
-        GetAllGroups Item { get; set; }
-        ChatViewType ViewType { get; set; }
-        Task HandleGetGroups();
+        GetGroupByIdDto Item { get; set; }
+        Task HandleGetGroup(string groupId);
     }
 }

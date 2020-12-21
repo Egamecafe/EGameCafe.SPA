@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.ViewModels
 {
-    public interface IChatVm
+    public interface ICreateGroupVm
     {
         event PropertyChangedEventHandler PropertyChanged;
-        GetAllGroupsDto CurrentGroup { get; set; }
         string PageUri { get; set; }
         NotificationModel Notification { get; set; }
-        GetAllGroups Item { get; set; }
+        CreateGroupModel Item { get; set; }
+        GetAllGames Games { get; set; }
         ChatViewType ViewType { get; set; }
-        Task HandleGetGroups();
+        Task HabdleGetGames();
+        Task HandleCreateGroup(CreateGroupModel item);
     }
 }

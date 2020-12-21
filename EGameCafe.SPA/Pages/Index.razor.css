@@ -1,0 +1,306 @@
+﻿
+.card__container {
+    position: relative;
+    padding: 1rem;
+}
+
+.card__media {
+    text-emphasis-color: yellow;
+    background: linear-gradient(135deg, #000000 10%, #cc0000 100%), url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.nqd1onm71BuYZxKoBvxdJwHaEM%26pid%3DApi&f=1");
+    background-size: cover;
+    background-position: 50% 50%;
+    width: 58%;
+    height: 250px;
+    border-radius: 15px;
+    padding: 10px 20px;
+    font-size: x-large;
+    vertical-align: middle;
+    -webkit-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+}
+
+.card__body {
+    position: absolute;
+    z-index: 2;
+    top: 20%;
+    left: 26%;
+    background: rgb(210, 210, 210);
+    height: 70%;
+    width: 46%;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+    padding: 1rem;
+    transition: 0.25s all ease-in-out;
+    margin-left: 100px;
+    overflow: hidden;
+}
+
+.card__title {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.author {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.card__container:hover .card__body {
+    transform: translate(-15px, -15px);
+    width: 40%;
+    min-height: 75%;
+    height: auto;
+    -webkit-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+    z-index: 100;
+}
+
+i.fa-gamepad {
+    margin-bottom: 10px;
+    font-size: 70px;
+    text-align: center;
+    color: yellow;
+    line-height: 100px;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid;
+    margin-left: 10px;
+}
+
+i.fa-steam {
+    margin-bottom: 10px;
+    font-size: 70px;
+    text-align: center;
+    color: yellow;
+    line-height: 100px;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid;
+    margin-left: 10px;
+}
+
+i.fa-cogs {
+    margin-bottom: 10px;
+    font-size: 70px;
+    text-align: center;
+    color: yellow;
+    line-height: 100px;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 2px solid;
+    margin-left: 10px;
+}
+
+.panel {
+    position: relative;
+    height: 808px;
+    /*max-height: 635px;*/
+    padding-bottom: 30px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 0 10px #990000;
+    -moz-box-shadow: 0 0 10px #990000;
+    box-shadow: 0 0 10px #990000;
+    background: #000;
+    /*margin: 100px auto;*/
+    text-align: center;
+}
+
+.profile-card__img {
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    z-index: 4;
+    box-shadow: 0px 5px 50px 0px #cc0000, 0px 0px 0px 7px rgba(53, 0, 0, 0.5);
+}
+
+.activity-body {
+}
+
+.activity-feed {
+    background-color: rgb(210, 210, 210);
+    border-radius: 15px;
+    -webkit-box-shadow: 0 0 10px black;
+    -moz-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+    padding: 15px;
+    list-style: none;
+    /*width: 400px;*/
+    height: 808px;
+}
+
+    .activity-feed .feed-item .image {
+        width: 38px;
+        height: 38px;
+        margin-top: 7px;
+        margin-left: auto;
+        margin-right: auto;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        overflow: hidden;
+        position: absolute;
+        z-index: 4;
+        box-shadow: 0px 2px 4px 0px #cc0000, 0px 0px 0px 2px rgba(53, 0, 0, 0.5);
+    }
+
+    .activity-feed .feed-item {
+        position: relative;
+        margin-bottom: 25px;
+        margin-top: 10px;
+        padding-bottom: 40px;
+        padding-left: 30px;
+        border-left: 2px solid black;
+        border-bottom: 2px solid black;
+        border-radius: 10px;
+    }
+
+        .activity-feed .feed-item:last-child {
+            border-color: black;
+        }
+
+        .activity-feed .feed-item::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 6px;
+            background: #cc0000;
+            border: 2px solid #000000;
+        }
+
+        .activity-feed .feed-item .date {
+            display: block;
+            position: relative;
+            top: -5px;
+            left: 50px;
+            font-style: italic;
+            font-weight: bolder;
+            text-transform: uppercase;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .activity-feed .feed-item .username {
+            display: block;
+            position: relative;
+            top: -5px;
+            left: 50px;
+            font-weight: bolder;
+            font-size: 13px;
+        }
+
+        .activity-feed .feed-item .text {
+            position: relative;
+            top: 30px;
+        }
+
+.mycontainer {
+    height: auto;
+}
+
+.activity-feed input[type="text"] {
+    position: relative;
+    margin-top: 10px;
+    background-color: #000000;
+    -webkit-border-radius: 45px;
+    -moz-border-radius: 45px;
+    border-radius: 45px;
+    font-size: 15px;
+    text-align: center;
+    height: 45px;
+    border: none;
+    padding-left: 15px;
+    width: -webkit-calc(100% - 15px);
+    width: -moz-calc(100% - 15px);
+    width: calc(100% - 15px);
+    margin-bottom: 10px;
+    top: -61px;
+    outline: none;
+}
+
+    .activity-feed input[type="text"][placeholder] {
+        color: rgb(210, 210, 210);
+        font-size: 15px;
+        font-weight: 500;
+        border: 2px solid #cc0000;
+        margin-bottom: 20px;
+    }
+
+.add-btn {
+    position: relative;
+    border-radius: 45px;
+    font-size: 30px;
+    color: #cc0000;
+    border: 2px solid #cc0000;
+    padding: 8px 12px 4px 12px;
+    background-color: yellow;
+    margin-top: 10px;
+    z-index: 1000;
+    outline: none;
+}
+
+    .add-btn:hover {
+        background-color: rgb(233, 217, 0);
+        color: #990000;
+    }
+
+    .add-btn:active {
+        -webkit-transform: translateY(1px);
+        -moz-transform: translateY(1px);
+        -ms-transform: translateY(1px);
+        -o-transform: translateY(1px);
+        transform: translateX(1px);
+    }
+
+.edit-btn {
+    position: relative;
+    border-radius: 45px;
+    font-size: 30px;
+    color: yellow;
+    border: 2px solid yellow;
+    padding: 2px 12px 4px 12px;
+    background-color: transparent;
+    margin-top: 10px;
+    z-index: 1000;
+    outline: none;
+    width: 50px;
+    height: 50px;
+}
+
+    .edit-btn:hover {
+        background-color: rgb(233, 217, 0);
+        color: #990000;
+    }
+
+    .edit-btn:active {
+        -webkit-transform: translateY(1px);
+        -moz-transform: translateY(1px);
+        -ms-transform: translateY(1px);
+        -o-transform: translateY(1px);
+        transform: translateX(1px);
+    }

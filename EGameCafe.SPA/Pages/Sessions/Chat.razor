@@ -1,15 +1,36 @@
-﻿@page "/chat"
+﻿@page "/chat/{action}"
 
 
 @inject IChatVm ViewModel
+@inject NavigationManager _navigationManager
 
 
-<Discussions List="ViewModel.Item.List" ValueClicked="@((e)=>OnChatClickChanged(e))" />
+
+<Discussions List="ViewModel.Item.List" ClickedGroup="@((e)=>OnChatClickChanged(e))" />
 
 
-<GroupChat GroupId="@ViewModel.CurrentGroupId" />
+@if (Action == ChatViewType.groupChat.ToString() && ViewModel.CurrentGroup is not null)
+{
+    <GroupChat CurrentGroup="@ViewModel.CurrentGroup" ClickedGroupInfo="OnGroupInfoClick" />
+}
+else if (Action == ChatViewType.createChat.ToString())
+{
+    <CreateGroup />
+}
+else if (Action == ChatViewType.groupInfo.ToString())
+{
+    <GroupInfo GroupId="@ViewModel.CurrentGroup.GroupId" />
+}
+else
+{
+    <div class="chat"></div>
+}
+
+
 
 @code{
+    [Parameter]
+    public string Action { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -35,8 +56,14 @@
         });
     }
 
-    protected void OnChatClickChanged(string groupId)
+    protected void OnChatClickChanged(GetAllGroupsDto dto)
     {
-        ViewModel.CurrentGroupId = groupId;
+        ViewModel.CurrentGroup = dto;
+        _navigationManager.NavigateTo($"/chat/{ChatViewType.groupChat}");
+    }
+
+    protected void OnGroupInfoClick(ChatViewType type)
+    {
+        _navigationManager.NavigateTo($"/chat/{type}");
     }
 }

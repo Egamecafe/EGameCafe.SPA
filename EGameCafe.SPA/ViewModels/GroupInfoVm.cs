@@ -6,22 +6,24 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+
 namespace EGameCafe.SPA.ViewModels
 {
-    public class ChatVm : IChatVm , INotifyPropertyChanged
+    public class GroupInfoVm : IGroupInfoVm, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private readonly IResponseService _responseService;
         private readonly IRepository _repository;
 
-        public ChatVm(IResponseService responseService, IRepository repository)
+        public GroupInfoVm(IResponseService responseService, IRepository repository)
         {
             _responseService = responseService;
             _repository = repository;
 
             notification = new NotificationModel();
-            item = new GetAllGroups();
+            item = new GetGroupByIdDto();
         }
-
 
         private NotificationModel notification;
         public NotificationModel Notification
@@ -35,8 +37,8 @@ namespace EGameCafe.SPA.ViewModels
         }
         public string PageUri { set; get; } = "/groupchat";
 
-        public GetAllGroups item;
-        public GetAllGroups Item 
+        public GetGroupByIdDto item;
+        public GetGroupByIdDto Item
         {
             get => item;
             set
@@ -46,24 +48,9 @@ namespace EGameCafe.SPA.ViewModels
             }
         }
 
-        public GetAllGroupsDto currentGroup;
-        public GetAllGroupsDto CurrentGroup 
+        public async Task HandleGetGroup(string groupId)
         {
-            get => currentGroup;
-            set
-            {
-                currentGroup = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ChatViewType ViewType { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public async Task HandleGetGroups()
-        {
-            var groupsResult = await _repository.AuthorizeGetAsync<GetAllGroups>("api/v1/Group/GetAllGroups/0/100/groupname");
+            var groupsResult = await _repository.AuthorizeGetAsync<GetGroupByIdDto>($"api/v1/Group/GetGroup/{groupId}");
 
             var notifResult = await _responseService.ResponseResultChecker(groupsResult.Result, PageUri, "عملیات با موفقیت انجام شد");
 

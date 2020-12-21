@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.ViewModels
 {
-    public class RegisterVm : IRegisterVm , INotifyPropertyChanged
+    public class RegisterVm : IRegisterVm, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,7 +55,8 @@ namespace EGameCafe.SPA.ViewModels
         }
 
         private string fullname;
-        public string Fullname {
+        public string Fullname
+        {
             get => fullname;
             set
             {
@@ -64,7 +65,12 @@ namespace EGameCafe.SPA.ViewModels
                 var name = fullname.Split(' ');
 
                 item.Firstname = name[0] ??= "";
-                item.Lastname = name[1] ??= "";
+
+                if (name.Length > 1)
+                {
+                    item.Lastname = name[1];
+                }
+                else item.Lastname = "";
 
                 OnPropertyChanged();
             }
