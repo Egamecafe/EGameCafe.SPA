@@ -37,10 +37,14 @@
             font-size: 15px;
             font-weight: 500;
         }
+
 </style>
 
 <div class="panel">
-    <div class="state"><br><i class="fa fa-unlock-alt"></i><br><h2>Welcome To</h2><h2>Egame Cafe</h2></div>
+    <div class="state"><br><i class="fa fa-unlock-alt"></i><br>
+        <h2>Welcome To</h2>
+        <h2>Egame Cafe</h2>
+    </div>
 
     <DisplayNotification Notification="ViewModel.Notification" />
 
@@ -49,10 +53,12 @@
 
         <div class="form">
             <ValidationMessage For="@(() => ViewModel.Item.Username)" />
-            <InputText @bind-Value="ViewModel.Item.Username" class="login-input" placeholder='Email or Username' type="text" />
+            <InputText @bind-Value="ViewModel.Item.Username" class="login-input" placeholder='Email or Username'
+                type="text" />
 
             <ValidationMessage For="@(() => ViewModel.Item.Password)" />
-            <InputText @bind-Value="ViewModel.Item.Password" class="login-input" placeholder='Password' type="password" />
+            <InputText @bind-Value="ViewModel.Item.Password" class="login-input" placeholder='Password'
+                type="password" />
 
             <button type="submit" class="login">Login</button>
         </div>
@@ -66,19 +72,19 @@
             </div>
 
         </div>
+
     </EditForm>
 
 </div>
 
 @code {
-
     protected override void OnInitialized()
     {
         ViewModel.PropertyChanged += async (sender, e) =>
         {
             await InvokeAsync(() =>
             {
-                StateHasChanged();
+    StateHasChanged();
             });
         };
     }
