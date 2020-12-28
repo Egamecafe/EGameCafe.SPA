@@ -27,7 +27,7 @@
     left: 26%;
     background: rgb(210, 210, 210);
     height: 70%;
-    width: 46%;
+    width: 60%;
     border-radius: 15px;
     -webkit-box-shadow: 0 0 10px black;
     -moz-box-shadow: 0 0 10px black;
@@ -50,7 +50,7 @@
 
 .card__container:hover .card__body {
     transform: translate(-15px, -15px);
-    width: 40%;
+    width: 60%;
     min-height: 75%;
     height: auto;
     -webkit-box-shadow: 0 0 10px black;
@@ -58,6 +58,7 @@
     box-shadow: 0 0 10px black;
     z-index: 100;
 }
+
 
 i.fa-gamepad {
     margin-bottom: 10px;
@@ -137,18 +138,20 @@ i.fa-cogs {
 }
 
 .activity-body {
-}
-
-.activity-feed {
     background-color: rgb(210, 210, 210);
     border-radius: 15px;
     -webkit-box-shadow: 0 0 10px black;
     -moz-box-shadow: 0 0 10px black;
     box-shadow: 0 0 10px black;
+    height: 808px;
+}
+
+.activity-feed {
+    height:500px;
     padding: 15px;
     list-style: none;
+    overflow : scroll;
     /*width: 400px;*/
-    height: 808px;
 }
 
     .activity-feed .feed-item .image {

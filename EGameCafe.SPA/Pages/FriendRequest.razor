@@ -1,0 +1,68 @@
+﻿@page "/friendrequest"
+@inject IFriendRequestVm ViewModel
+
+<div>
+    <div class="card">
+        <div class="card-body">
+            @if (ViewModel.Items.Any())
+            {
+                @foreach (var item in ViewModel.Items)
+                {
+
+                    <div class="row">
+                        <div class="col-3">
+                            <img class="img-circle" src="@(item.ProfileImage)" alt="" />
+                        </div>
+                        <div class="col-6 m-auto">
+                            <p>@item.Username</p>
+                            <p>@item.Fullname</p>
+                        </div>
+                        <div class="col-3 m-auto">
+                            <div class="btn-group">
+                                <button @onclick="(()=>HandleAcceptReques(item.UserId))" type="button" class="btn btn-danger">Accept</button>
+                                <button @onclick="(()=>HandleRejectReques(item.UserId))" type="button" class="btn btn-danger">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.HandleGetAllFriendRequests();
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    protected async Task HandleSystemInfoSubmit()
+    {
+        await ViewModel.HandleGetAllFriendRequests();
+    }
+
+    protected async Task HandleAcceptReques(string id) => await ViewModel.AcceptRequest(id);
+
+    protected async Task HandleRejectReques(string id) => await ViewModel.DeclineRequest(id);
+}

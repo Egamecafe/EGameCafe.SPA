@@ -28,7 +28,12 @@
                     <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
                         <div class="online"></div>
                     </div>
-                    <p class="text"> @msg.MessageText </p>
+                    <div class="text">
+                        <p style="font-size:11px; margin-bottom:3px">@msg.Username</p>
+                        <p class="mb-0" style="font-size:19px">
+                            @msg.MessageText
+                        </p>
+                    </div>
                 </div>
             }
 
@@ -76,6 +81,7 @@
     private bool ChangeUserId;
     private string CurrentUserId;
     private string LastUserId;
+    private string Username;
 
     private bool IsAdded;
 
@@ -98,18 +104,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
-            .Build();
+        Username = await _currentUserService.GetUsername();
 
-        hubConnection.On<string, string>("Send", (userId, message) =>
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
+        .Build();
+
+        hubConnection.On<string, string, string>("Send", (userId, message, username) =>
         {
             var encodedMsg = $"{message}";
 
             ChatMessageModel msg = new()
             {
                 MessageText = encodedMsg,
-                UserId = userId
+                UserId = userId,
+                Username = username
             };
 
             if (LastUserId != userId && userId != CurrentUserId)
@@ -133,7 +142,7 @@
 
     protected async Task Send()
     {
-        await hubConnection.SendAsync("SendMessageToGroup", currentGroup.GroupId, CurrentUserId, messageInput);
+        await hubConnection.SendAsync("SendMessageToGroup", currentGroup.GroupId, CurrentUserId, messageInput, Username);
         messageInput = string.Empty;
     }
 

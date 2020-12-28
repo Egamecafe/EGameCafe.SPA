@@ -22,6 +22,7 @@ namespace EGameCafe.SPA.Installers
             services.AddTransient<IValidator<ForgotPasswordModel>, ForgotPasswordValidation>();
             services.AddTransient<IValidator<ResetPasswordVm>, ResetPasswordValodation>();
             services.AddTransient<IValidator<CreateGroupVm>, CreateGroupValidation>();
+            //services.AddTransient<IValidator<CreateGroupVm>, CreateGroupValidation>();
         }
     }
 }

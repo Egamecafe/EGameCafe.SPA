@@ -29,6 +29,34 @@
                 </div>
             }
         }
+
+        <hr />
+
+        <p class="pl-3">My Groups</p>
+
+        @if (UserGroups is not null)
+        {
+            @if (UserGroups.Any())
+            {
+                foreach (var item in UserGroups)
+                {
+                    <div class="discussion-background">
+                        <div class="discussion" @onclick="@(()=>OnChatClick(item))">
+                            <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
+                                <div class="online"></div>
+                            </div>
+                            <div class="desc-contact">
+                                <p class="name">@item.GroupName</p>
+                                <p class="gp-name">@item.GameName</p>
+                                @*<p class="message">9 pm at the bar if possible 😳</p>*@
+                            </div>
+                            <div class="timer">12 sec</div>
+                        </div>
+                    </div>
+                }
+            }
+
+        }
     }
 
 </section>
@@ -36,6 +64,9 @@
 @code{
     [Parameter]
     public IList<GetAllGroupsDto> List { get; set; }
+
+    [Parameter]
+    public IList<GetAllGroupsDto> UserGroups { get; set; }
 
     [Parameter]
     public EventCallback<GetAllGroupsDto> ClickedGroup { get; set; }

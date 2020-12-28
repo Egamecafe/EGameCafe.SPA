@@ -52,3 +52,6 @@ a, .btn-link {
     }
 
 
+.btn-danger {
+    background-color: #6a0000 !important;
+}

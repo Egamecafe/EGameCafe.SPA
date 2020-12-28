@@ -9,7 +9,7 @@ namespace EGameCafe.SPA.ViewModels
         event PropertyChangedEventHandler PropertyChanged;
         string PageUri { get; set; }
         NotificationModel Notification { get; set; }
-        GetGroupByIdDto Item { get; set; }
+        GetGroupByIdVm Item { get; set; }
         Task HandleGetGroup(string groupId);
     }
 }

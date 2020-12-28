@@ -11,8 +11,10 @@ namespace EGameCafe.SPA.ViewModels
         GetAllGroupsDto CurrentGroup { get; set; }
         string PageUri { get; set; }
         NotificationModel Notification { get; set; }
-        GetAllGroups Item { get; set; }
+        GetAllGroups AllGroups { get; set; }
+        GetAllGroups UserGroups { get; set; }
         ChatViewType ViewType { get; set; }
         Task HandleGetGroups();
+        Task HandleGetUserGroups();
     }
 }

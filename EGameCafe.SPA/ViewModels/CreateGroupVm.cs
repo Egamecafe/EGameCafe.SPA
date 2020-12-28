@@ -1,6 +1,7 @@
 ﻿using EGameCafe.SPA.Enums;
 using EGameCafe.SPA.Models;
 using EGameCafe.SPA.Services;
+using EGameCafe.SPA.Services.AccountService;
 using EGameCafe.SPA.Services.ResponseServices;
 using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
@@ -16,13 +17,15 @@ namespace EGameCafe.SPA.ViewModels
 
         private readonly IResponseService _responseService;
         private readonly IRepository _repository;
+        private readonly ICurrentUserService _currentUser;
         private readonly NavigationManager _navigationManager;
 
 
-        public CreateGroupVm(IResponseService responseService, IRepository repository, NavigationManager navigationManager)
+        public CreateGroupVm(IResponseService responseService, IRepository repository, NavigationManager navigationManager, ICurrentUserService currentUser)
         {
             _responseService = responseService;
             _repository = repository;
+            _currentUser = currentUser;
 
             item = new CreateGroupModel();
             notification = new NotificationModel();
@@ -88,6 +91,8 @@ namespace EGameCafe.SPA.ViewModels
 
         public async Task HandleCreateGroup(CreateGroupModel item)
         {
+            item.CreatorId = await _currentUser.GetUserId();
+
             var result = await _repository.AuthorizePostAsync(item, "api/v1/Group/CreateGroup");
 
             var notifResult = await _responseService.ResponseResultChecker(result, PageUri, "Successful");

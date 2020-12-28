@@ -22,7 +22,7 @@ namespace EGameCafe.SPA.ViewModels
             _repository = repository;
 
             notification = new NotificationModel();
-            item = new GetGroupByIdDto();
+            item = new GetGroupByIdVm();
         }
 
         private NotificationModel notification;
@@ -37,8 +37,8 @@ namespace EGameCafe.SPA.ViewModels
         }
         public string PageUri { set; get; } = "/groupchat";
 
-        public GetGroupByIdDto item;
-        public GetGroupByIdDto Item
+        public GetGroupByIdVm item;
+        public GetGroupByIdVm Item
         {
             get => item;
             set
@@ -50,7 +50,7 @@ namespace EGameCafe.SPA.ViewModels
 
         public async Task HandleGetGroup(string groupId)
         {
-            var groupsResult = await _repository.AuthorizeGetAsync<GetGroupByIdDto>($"api/v1/Group/GetGroup/{groupId}");
+            var groupsResult = await _repository.AuthorizeGetAsync<GetGroupByIdVm>($"api/v1/Group/GetGroup/{groupId}");
 
             var notifResult = await _responseService.ResponseResultChecker(groupsResult.Result, PageUri, "عملیات با موفقیت انجام شد");
 

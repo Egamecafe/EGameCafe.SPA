@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.Models
 {
-    public class ChatMessageModel
+    public class FriendRequestModel
     {
+        public string Id { get; set; }
         public string UserId { get; set; }
+        public string Fullname { get; set; }
         public string Username { get; set; }
-        public string MessageText { get; set; }
-        public bool WithImage { get; set; }
+        public string ProfileImage { get; set; }
+
     }
 }

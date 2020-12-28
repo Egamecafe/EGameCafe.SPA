@@ -12,5 +12,6 @@ namespace EGameCafe.SPA.Models
         public string GroupName { get; set; }
         public GroupType GroupType { get; set; }
         public string GameId { get; set; }
+        public string CreatorId { get; set; }
     }
 }
