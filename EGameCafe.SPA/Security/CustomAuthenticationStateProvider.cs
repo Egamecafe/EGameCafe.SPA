@@ -59,8 +59,10 @@ namespace EGameCafe.SPA.Security
             var claims = jsonToken.Claims.ToList();
 
             var userId = claims.Where(e => e.Type == "id").Select(type => type.Value).FirstOrDefault();
+            var username = claims.Where(e => e.Type == "username").Select(type => type.Value).FirstOrDefault();
 
             await _currentUserService.SetUserId(userId);
+            await _currentUserService.SetUsername(username);
 
             var role = claims.Where(e => e.Type == "role").Select((type,value) => new Claim(ClaimTypes.Role, type.Value)).ToList();
 

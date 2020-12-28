@@ -1,0 +1,109 @@
+﻿@inject ICreateGroupVm ViewModel
+@inject IJSRuntime JsRuntime
+
+
+<div id="creategroup-section">
+
+    <h2 class="text-center pt-3">Create new Group</h2>
+
+    <DisplayNotification Notification="ViewModel.Notification" />
+
+    <EditForm Model="ViewModel" OnValidSubmit="HandleCreateGroup">
+        <FluentValidator />
+
+        <div class="form-row">
+            <div class="col">
+                <ValidationMessage For="@(() => ViewModel.Item.GroupName)" />
+                <InputText @bind-Value="ViewModel.Item.GroupName" class="form-control" placeholder='Enter group name' type="text" />
+            </div>
+        </div>
+
+        <div class="form-group pt-4">
+            <label for="sel1">Select Group Type:</label>
+            <ValidationMessage For="@(() => ViewModel.Item.GroupType)" />
+            <InputSelect @bind-Value="ViewModel.Item.GroupType" class="form-control">
+                @foreach (var type in Enum.GetValues(typeof(GroupType)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </InputSelect>
+        </div>
+
+        @if (ViewModel.Games.List.Any())
+        {
+
+            <div class="container">
+
+                @*<InputRadioGroup Name="GameSelect" @bind-Value="ViewModel.Item.Game">
+
+                        @foreach (var game in ViewModel.Games.List)
+                            {
+                            <label class="form-check-label" for="radio1">
+
+                                <InputRadio Value="game" class="form-check-input" />
+                                @game.GameName
+                            </label>
+                            }
+
+                    </InputRadioGroup>*@
+                <ValidationMessage For="@(() => ViewModel.Item.GameId)" />
+
+                @foreach (var game in ViewModel.Games.List)
+                {
+                    <div class="card" @onclick="@(()=> SelectGame(game.GameId))">
+                        <div class="card-body">@game.GameName</div>
+                    </div>
+
+                    <br>
+                }
+
+            </div>
+        }
+
+        <button type="submit" style="width:100%" class="btn btn-danger">Create</button>
+
+    </EditForm>
+</div>
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.HabdleGetGames();
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    protected void SelectGame(string gameId)
+    {
+        ViewModel.Item.GameId = gameId;
+    }
+
+    protected async Task HandleCreateGroup()
+    {
+        await ViewModel.HandleCreateGroup(ViewModel.Item);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("changeTabActiveClassOnClick", ".card", "card-body-active");
+    }
+}

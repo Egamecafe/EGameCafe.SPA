@@ -1,0 +1,90 @@
+﻿@inject IGroupInfoVm ViewModel
+
+<div id="groupInfo-section">
+
+    <h2 class="text-center pt-3">@ViewModel.Item.GroupInfo.GroupName Information</h2>
+
+    <DisplayNotification Notification="ViewModel.Notification" />
+
+    <EditForm Model="ViewModel">
+
+
+        <div class="form-group">
+            <label for="email">Group Name :</label>
+            <InputText @bind-Value="ViewModel.Item.GroupInfo.GroupName" disabled class="form-control" type="text" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Group Sharing Link :</label>
+            <InputText @bind-Value="ViewModel.Item.GroupInfo.SharingLink" disabled class="form-control" type="text" />
+        </div>
+
+        @*<div class="form-row">
+            <div class="col">
+                <InputText Value="@ViewModel.Item.GroupType.ToString()" disabled class="form-control" type="text" />
+            </div>
+        </div>*@
+
+        @if (ViewModel.Item.GroupInfo.GameName is not null)
+        {
+
+            <div class="container pt-5">
+
+                <p>Session Game : </p>
+
+                <div class="card">
+                    <div class="card-body">@ViewModel.Item.GroupInfo.GameName</div>
+                </div>
+
+                <br>
+
+            </div>
+        }
+
+        @if (ViewModel.Item.GroupMembers.Any())
+        {
+            <p>Group members : </p>
+
+            @foreach (var member in ViewModel.Item.GroupMembers)
+            {
+                <div class="card bg-primary text-white">
+                    <div class="card-body">@member.Username</div>
+                </div>
+
+                <br>
+            }
+        }
+
+    </EditForm>
+</div>
+
+@code {
+
+    [Parameter]
+    public string GroupId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.HandleGetGroup(GroupId);
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+}

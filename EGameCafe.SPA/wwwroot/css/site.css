@@ -53,3 +53,16 @@ a,
 	right: 0.75rem;
 	top: 0.5rem;
 }
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+
+.btn-danger {
+    background-color: #6a0000 !important;
+}
+

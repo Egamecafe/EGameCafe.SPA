@@ -1,12 +1,11 @@
-﻿
-@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
 @inject ICurrentUserService _currentUserService
 @implements IAsyncDisposable
 
 <section class="chat">
     <div class="header-chat">
         <i class="icon fa fa-user-o" aria-hidden="true"></i>
-        <p class="name">Megan Leib</p>
+        <p class="name" @onclick="@(()=>OnChatClick(ChatViewType.groupInfo))">@CurrentGroup.GroupName</p>
         <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
     </div>
     <div class="messages-chat">
@@ -29,7 +28,12 @@
                     <div class="photo" style="background-image: url(https://image.noelshack.com/fichiers/2017/38/2/1505775062-1505606859-portrait-1961529-960-720.jpg);">
                         <div class="online"></div>
                     </div>
-                    <p class="text"> @msg.MessageText </p>
+                    <div class="text">
+                        <p style="font-size:11px; margin-bottom:3px">@msg.Username</p>
+                        <p class="mb-0" style="font-size:19px">
+                            @msg.MessageText
+                        </p>
+                    </div>
                 </div>
             }
 
@@ -47,22 +51,23 @@
     </div>
     <div class="footer-chat">
         <i class="icon fa fa-smile-o clickable" style="font-size:25pt;" aria-hidden="true"></i>
-        <input @bind="messageInput" type="text" class="write-message" placeholder="Type your message here" />
-        <i @onclick="@(()=>{ AddToGroup(); Send();})" class="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></i>
+        <input @bind-value="messageInput" @bind-value:event="oninput" @onkeypress="@(async (e)=> { if (e.Code == "Enter") await Send(); })" type="text" class="write-message" placeholder="Type your message here" />
+        <button @onclick="@(async ()=> await Send())" class="icon send fa fa-paper-plane-o clickable" aria-hidden="true"></button>
     </div>
 </section>
 
 @code{
 
-    private string groupId;
+    private GetAllGroupsDto currentGroup;
 
     [Parameter]
-    public string GroupId
+    public GetAllGroupsDto CurrentGroup
     {
-        get => groupId;
+        get => currentGroup;
         set
         {
-            groupId = value;
+            currentGroup = value;
+            IsAdded = false;
             messages.Clear();
         }
     }
@@ -70,12 +75,26 @@
     private HubConnection hubConnection;
     private List<ChatMessageModel> messages = new List<ChatMessageModel>();
     private string userInput;
-    private string messageInput;
+    private string messageInput { get; set; }
 
 
     private bool ChangeUserId;
     private string CurrentUserId;
     private string LastUserId;
+    private string Username;
+
+    private bool IsAdded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        if (!IsAdded)
+        {
+            await AddToGroup();
+            IsAdded = true;
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -85,18 +104,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
-            .Build();
+        Username = await _currentUserService.GetUsername();
 
-        hubConnection.On<string, string>("Send", (userId, message) =>
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
+        .Build();
+
+        hubConnection.On<string, string, string>("Send", (userId, message, username) =>
         {
             var encodedMsg = $"{message}";
 
             ChatMessageModel msg = new()
             {
                 MessageText = encodedMsg,
-                UserId = userId
+                UserId = userId,
+                Username = username
             };
 
             if (LastUserId != userId && userId != CurrentUserId)
@@ -118,11 +140,13 @@
 
     }
 
-    Task Send() =>
-        hubConnection.SendAsync("SendMessageToGroup", GroupId, CurrentUserId, messageInput);
+    protected async Task Send()
+    {
+        await hubConnection.SendAsync("SendMessageToGroup", currentGroup.GroupId, CurrentUserId, messageInput, Username);
+        messageInput = string.Empty;
+    }
 
-    Task AddToGroup() =>
-        hubConnection.SendAsync("AddToGroup", GroupId);
+    Task AddToGroup() => hubConnection.SendAsync("AddToGroup", currentGroup.GroupId);
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
@@ -130,5 +154,13 @@
     public async ValueTask DisposeAsync()
     {
         await hubConnection.DisposeAsync();
+    }
+
+    [Parameter]
+    public EventCallback<ChatViewType> ClickedGroupInfo { get; set; }
+
+    private Task OnChatClick(ChatViewType type)
+    {
+        return ClickedGroupInfo.InvokeAsync(type);
     }
 }

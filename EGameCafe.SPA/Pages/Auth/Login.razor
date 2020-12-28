@@ -32,11 +32,12 @@
         margin-bottom: 10px;
     }
 
-    .panel .login-input[placeholder] {
-        color: #656d79;
-        font-size: 15px;
-        font-weight: 500;
-    }
+        .panel .login-input[placeholder] {
+            color: #656d79;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
 </style>
 
 <div class="panel">
@@ -62,8 +63,16 @@
             <button type="submit" class="login">Login</button>
         </div>
 
-        <div class="fack"><a href="forgotpassword"><i class="fa fa-question-circle"></i>Forgot password?</a></div>
-        <div class="fack"><a href="register"><i class="fa fa-user"></i>Join us!</a></div>
+        <div class="fack">
+            <div>
+                <a href="forgotpassword"><i class="fa fa-question-circle"></i>Forgot password</a>
+            </div>
+            <div class="pt-2">
+                <a href="register"><i class="fa fa-question-circle"></i>You don’t have an account? Sign up </a>
+            </div>
+
+        </div>
+
     </EditForm>
 
 </div>

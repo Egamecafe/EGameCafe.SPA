@@ -51,6 +51,34 @@ namespace EGameCafe.SPA.Services
             }
         }
 
+        public async Task<Result> AuthorizePutAsync<T>(T command, string rout)
+        {
+            try
+            {
+                var token = await _currentUser.GetAuthToken();
+
+                var modelAsJson = JsonConvert.SerializeObject(command);
+
+                var requestMessage = new HttpRequestMessage(HttpMethod.Put, rout);
+
+                requestMessage.Headers.Authorization
+                    = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                requestMessage.Content = new StringContent(modelAsJson);
+
+                requestMessage.Content.Headers.ContentType
+                    = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+                var response = await _httpClient.SendAsync(requestMessage);
+
+                return response.DeserializeResponseMessageStatus().Result;
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
+        }
+
         public async Task<(Result Result, T ResultVm)> AuthorizeGetAsync<T>(string rout)
         {
             try

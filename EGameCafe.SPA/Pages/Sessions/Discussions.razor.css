@@ -88,16 +88,20 @@
         font-size: 11pt;
         color: #515151;
     }
-
-    .discussions .discussion .message {
+    .discussions .discussion .gp-name {
+        font-size: 12px;
+        padding-top: 2px;
+        padding-left: 23px;
+    }
+     .discussions .discussion .message {
         margin: 6px 0 0 20px;
         font-family: 'Montserrat', sans-serif;
         font-size: 9pt;
         color: #515151;
-    }
+     }
 
 .discussion-background {
-    background-color: #87a3ec;
+    background-color: #6a0000;
 }
 
 .online {

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.Models
 {
-    public class GetAllGroupsDto
+    public class CreateGroupModel
     {
-        public string GroupId { get; set; }
         public string GroupName { get; set; }
-        public string GameName { get; set; }
         public GroupType GroupType { get; set; }
+        public string GameId { get; set; }
+        public string CreatorId { get; set; }
     }
 }

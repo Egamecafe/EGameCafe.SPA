@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGameCafe.SPA", "EGameCafe.SPA\EGameCafe.SPA.csproj", "{ECDB3870-BFEC-411F-8A9C-098E91147B16}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGameCafe.Components", "EGameCafe.Components\EGameCafe.Components.csproj", "{803910AA-D26B-4271-AADC-1A3F86CF096B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{ECDB3870-BFEC-411F-8A9C-098E91147B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDB3870-BFEC-411F-8A9C-098E91147B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECDB3870-BFEC-411F-8A9C-098E91147B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803910AA-D26B-4271-AADC-1A3F86CF096B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803910AA-D26B-4271-AADC-1A3F86CF096B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803910AA-D26B-4271-AADC-1A3F86CF096B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803910AA-D26B-4271-AADC-1A3F86CF096B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

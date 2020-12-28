@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.Models
 {
-    public class ChatMessageModel
+    public class CreateActivityModel
     {
+        public string ActivityTitle { get; set; }
+        public string ActivityText { get; set; }
         public string UserId { get; set; }
-        public string Username { get; set; }
-        public string MessageText { get; set; }
-        public bool WithImage { get; set; }
     }
 }

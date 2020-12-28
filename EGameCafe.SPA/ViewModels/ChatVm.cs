@@ -1,29 +1,30 @@
-﻿using EGameCafe.SPA.Models;
+﻿using EGameCafe.SPA.Enums;
+using EGameCafe.SPA.Models;
 using EGameCafe.SPA.Services;
+using EGameCafe.SPA.Services.AccountService;
 using EGameCafe.SPA.Services.ResponseServices;
-using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EGameCafe.SPA.ViewModels
 {
-    public class ChatVm : IChatVm
+    public class ChatVm : IChatVm , INotifyPropertyChanged
     {
         private readonly IResponseService _responseService;
         private readonly IRepository _repository;
+        private readonly ICurrentUserService _currentUser;
 
-        public ChatVm(IResponseService responseService, IRepository repository)
+        public ChatVm(IResponseService responseService, IRepository repository, ICurrentUserService currentUser)
         {
             _responseService = responseService;
             _repository = repository;
+            _currentUser = currentUser;
 
             notification = new NotificationModel();
-            item = new GetAllGroups();
+            allGroups = new GetAllGroups();
+            userGroups = new GetAllGroups();
+            currentGroup = new GetAllGroupsDto();
         }
 
 
@@ -39,27 +40,41 @@ namespace EGameCafe.SPA.ViewModels
         }
         public string PageUri { set; get; } = "/groupchat";
 
-        public GetAllGroups item;
-        public GetAllGroups Item 
+        public GetAllGroups allGroups;
+        public GetAllGroups AllGroups 
         {
-            get => item;
+            get => allGroups;
             set
             {
-                item = value;
+                allGroups = value;
                 OnPropertyChanged();
             }
         }
 
-        public string currentGroupId;
-        public string CurrentGroupId 
+        public GetAllGroups userGroups;
+        public GetAllGroups UserGroups
         {
-            get => currentGroupId;
+            get => userGroups;
             set
             {
-                currentGroupId = value;
+                userGroups = value;
                 OnPropertyChanged();
             }
         }
+
+
+        public GetAllGroupsDto currentGroup;
+        public GetAllGroupsDto CurrentGroup 
+        {
+            get => currentGroup;
+            set
+            {
+                currentGroup = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ChatViewType ViewType { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -75,15 +90,36 @@ namespace EGameCafe.SPA.ViewModels
             }
             else
             {
-                Item = groupsResult.ResultVm;
+                allGroups = groupsResult.ResultVm;
             }
 
-            OnPropertyChanged(nameof(Item));
+            OnPropertyChanged(nameof(AllGroups));
+        }
+
+        public async Task HandleGetUserGroups()
+        {
+            var userId = await _currentUser.GetUserId();
+
+            var groupsResult = await _repository.AuthorizeGetAsync<GetAllGroups>($"api/v1/Group/GetAllUserGroups/{userId}");
+
+            var notifResult = await _responseService.ResponseResultChecker(groupsResult.Result, PageUri, "عملیات با موفقیت انجام شد");
+
+            if (groupsResult.Result.Status != 200)
+            {
+                Notification = notifResult;
+            }
+            else
+            {
+                userGroups = groupsResult.ResultVm;
+            }
+
+            OnPropertyChanged(nameof(AllGroups));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

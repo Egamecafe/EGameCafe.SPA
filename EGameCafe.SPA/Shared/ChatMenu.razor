@@ -1,15 +1,24 @@
-﻿<nav class="menu">
+﻿@inject IJSRuntime JsRuntime
+
+<nav class="menu">
     <ul class="items">
+
         <li class="item">
-            <i class="fa fa-home" aria-hidden="true"></i>
+            <a class="nav-link" href="/">
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
         </li>
         <li class="item">
-            <i class="fa fa-user" aria-hidden="true"></i>
+            <a class="nav-link" href="@($"/chat/{ChatViewType.clear}")">
+                <i class="fa fa-user" aria-hidden="true"></i>
+            </a>
         </li>
         <li class="item">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <a class="nav-link" href="@($"/chat/{ChatViewType.createChat}")">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
         </li>
-        <li class="item item-active">
+        <li class="item">
             <i class="fa fa-commenting" aria-hidden="true"></i>
         </li>
         <li class="item">
@@ -21,3 +30,9 @@
     </ul>
 </nav>
 
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("changeTabActiveClassOnClick", ".item", "item-active");
+    }
+}
