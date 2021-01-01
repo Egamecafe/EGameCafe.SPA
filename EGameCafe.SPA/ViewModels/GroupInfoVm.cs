@@ -35,6 +35,19 @@ namespace EGameCafe.SPA.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string sharingLink;
+        public string SharingLink
+        {
+            get => sharingLink;
+            set
+            {
+                sharingLink = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public string PageUri { set; get; } = "/groupchat";
 
         public GetGroupByIdVm item;
@@ -44,6 +57,7 @@ namespace EGameCafe.SPA.ViewModels
             set
             {
                 item = value;
+                sharingLink = "joingroup/" + item.GroupInfo.SharingLink;
                 OnPropertyChanged();
             }
         }

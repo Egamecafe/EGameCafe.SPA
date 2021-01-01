@@ -1,0 +1,34 @@
+﻿@page "/joingroup/{sharingCode}"
+@inject IJoinGroupVm ViewModel
+
+<DisplayNotification Notification="ViewModel.Notification" />
+
+@code {
+
+    [Parameter]
+    public string SharingCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.HandleJoinGroup(SharingCode);
+    }
+
+    protected override void OnInitialized()
+    {
+        ViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+}

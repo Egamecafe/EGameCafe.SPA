@@ -1,6 +1,8 @@
 ﻿@page "/friendrequest"
 @inject IFriendRequestVm ViewModel
 
+<DisplayNotification Notification="ViewModel.Notification" />
+
 <div>
     <div class="card">
         <div class="card-body">
@@ -29,6 +31,41 @@
         </div>
     </div>
 </div>
+
+<br />
+<br />
+<br />
+<br />
+
+
+<EditForm Model="ViewModel.ModelItem" OnValidSubmit="HandleSubmit">
+    <FluentValidator></FluentValidator>
+
+    <div class="row">
+        <div class="col">
+            <ValidationMessage For="@(() => ViewModel.ModelItem.ReceiverId)" />
+            <input @oninput="OnInputSelect" @onfocusout="@(()=>SearchingOnFocusOut())" class="form-control" placeholder="Enter username" />
+
+            @if (ViewModel.IsShowResult)
+            {
+                <div style="position:absolute;background-color:white;height:250px;width: 98%;">
+                    @foreach (var item in ViewModel.SearchItems)
+                    {
+                        <p class="search-result" @onclick="()=>ClickSearchResult(item)">@item.Username</p>
+                    }
+                </div>
+            }
+
+            @if (ViewModel.ModelItem is not null)
+            {
+                <p class="mt-2">User Selected Id:  @ViewModel.ModelItem.ReceiverId</p>
+            }
+
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</EditForm>
 
 
 @code {
@@ -60,6 +97,27 @@
     protected async Task HandleSystemInfoSubmit()
     {
         await ViewModel.HandleGetAllFriendRequests();
+    }
+
+    protected async Task OnInputSelect(ChangeEventArgs args)
+    {
+        await ViewModel.HandleSearchUser(args.Value.ToString());
+    }
+
+    protected async Task ClickSearchResult(UserSearchModel user)
+    {
+        await ViewModel.HandleSearchClick(user);
+    }
+
+    public async Task SearchingOnFocusOut()
+    {
+        await Task.Delay(500);
+        ViewModel.IsShowResult = false;
+    }
+
+    protected async Task HandleSubmit()
+    {
+        await ViewModel.HandleSendRequest();
     }
 
     protected async Task HandleAcceptReques(string id) => await ViewModel.AcceptRequest(id);

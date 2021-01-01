@@ -97,147 +97,151 @@
                                 <div class="card__body">
                                     <div class="card__title">System Specifications</div>
 
-                                    <EditForm Model="ViewModel.Item.SystemInfo" OnValidSubmit="HandleSystemInfoSubmit" class="pt-3">
+                                    @if (ViewModel.Item.SystemInfo != null)
+                                    {
+                                        <EditForm Model="ViewModel.Item.SystemInfo" OnValidSubmit="HandleSystemInfoSubmit" class="pt-3">
 
-                                        <div class="form-row">
-                                            <div class="col-6">
-                                                <label for="RamManufacturer">Ram Manufacturer:</label>
-                                            </div>
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
+                                                    <label for="RamManufacturer">Ram Manufacturer:</label>
+                                                </div>
+                                                <div class="col-6">
 
-                                                <InputSelect @bind-Value="ViewModel.Item.SystemInfo.RamManufacturer" type="text" class="form-control" id="RamManufacturer"
-                                                             placeholder="" name="RamManufacturer" disabled="@(RandomUserId is not null)">
-                                                    @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
-                                                        {
-                                                        <option value="@type">@type</option>
-                                                        }
-                                                </InputSelect>
+                                                    <InputSelect @bind-Value="ViewModel.Item.SystemInfo.RamManufacturer" type="text" class="form-control" id="RamManufacturer"
+                                                                 placeholder="" name="RamManufacturer" disabled="@(RandomUserId is not null)">
+                                                        @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
+                                                                {
+                                                            <option value="@type">@type</option>
+                                                                }
+                                                    </InputSelect>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-row">
+                                            <div class="form-row">
 
-                                            <div class="col-6">
-                                                <label for="TotalRam">Total Ram Size:</label>
-                                            </div>
+                                                <div class="col-6">
+                                                    <label for="TotalRam">Total Ram Size:</label>
+                                                </div>
 
-                                            <div class="col-6">
-                                                <InputNumber @bind-Value="ViewModel.Item.SystemInfo.TotalRam" disabled="@(RandomUserId is not null)" class="form-control" id="TotalRam" name="TotalRam" />
-                                            </div>
+                                                <div class="col-6">
+                                                    <InputNumber @bind-Value="ViewModel.Item.SystemInfo.TotalRam" disabled="@(RandomUserId is not null)" class="form-control" id="TotalRam" name="TotalRam" />
+                                                </div>
 
-                                        </div>
-
-
-                                        <div class="form-row">
-                                            <div class="col-6">
-                                                <label for="PowerManufacturer">Power Manufacturer:</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <InputSelect @bind-Value="ViewModel.Item.SystemInfo.PowerManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="PowerManufacturer"
-                                                             placeholder="" name="RamManufacturer">
-                                                    @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
-                                                        {
-                                                        <option value="@type">@type</option>
-                                                        }
-                                                </InputSelect>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-6">
-                                                <label for="PowerName">Power Name:</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <InputText @bind-Value="ViewModel.Item.SystemInfo.PowerName" disabled="@(RandomUserId is not null)" class="form-control" id="PowerName" name="PowerName" />
                                             </div>
 
-                                        </div>
 
-                                        <div class="form-row">
-                                            <div class="col-6">
-                                                <label for="GraphicCardManufacturer">GraphicCar Manufacturer:</label>
+                                            <div class="form-row">
+                                                <div class="col-6">
+                                                    <label for="PowerManufacturer">Power Manufacturer:</label>
+                                                </div>
+                                                <div class="col-6">
+                                                    <InputSelect @bind-Value="ViewModel.Item.SystemInfo.PowerManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="PowerManufacturer"
+                                                                 placeholder="" name="RamManufacturer">
+                                                        @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
+                                                                {
+                                                            <option value="@type">@type</option>
+                                                                }
+                                                    </InputSelect>
+                                                </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
+                                                    <label for="PowerName">Power Name:</label>
+                                                </div>
+                                                <div class="col-6">
+                                                    <InputText @bind-Value="ViewModel.Item.SystemInfo.PowerName" disabled="@(RandomUserId is not null)" class="form-control" id="PowerName" name="PowerName" />
+                                                </div>
 
-                                                <InputSelect @bind-Value="ViewModel.Item.SystemInfo.GraphicCardManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="GraphicCardManufacturer"
-                                                             placeholder="" name="GraphicCardManufacturer">
-                                                    @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
-                                                        {
-                                                        <option value="@type">@type</option>
-                                                        }
-                                                </InputSelect>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-6">
-
-                                                <label for="PowerName">Graphic Card Name:</label>
-                                            </div>
-                                            <div class="col-6">
-
-                                                <InputText @bind-Value="ViewModel.Item.SystemInfo.GraphicCardName" disabled="@(RandomUserId is not null)" class="form-control" id="GraphicCardName" name="GraphicCardName" />
                                             </div>
 
-                                        </div>
+                                            <div class="form-row">
+                                                <div class="col-6">
+                                                    <label for="GraphicCardManufacturer">GraphicCar Manufacturer:</label>
+                                                </div>
+                                                <div class="col-6">
 
-                                        <div class="form-row">
-                                            <div class="col-6">
+                                                    <InputSelect @bind-Value="ViewModel.Item.SystemInfo.GraphicCardManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="GraphicCardManufacturer"
+                                                                 placeholder="" name="GraphicCardManufacturer">
+                                                        @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
+                                                                {
+                                                            <option value="@type">@type</option>
+                                                                }
+                                                    </InputSelect>
+                                                </div>
 
-                                                <label for="CaseManufacturer">Case Manufacturer:</label>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
 
-                                                <InputSelect @bind-Value="ViewModel.Item.SystemInfo.CaseManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="CaseManufacturer"
-                                                             placeholder="" name="CaseManufacturer">
-                                                    @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
-                                                        {
-                                                        <option value="@type">@type</option>
-                                                        }
-                                                </InputSelect>
+                                                    <label for="PowerName">Graphic Card Name:</label>
+                                                </div>
+                                                <div class="col-6">
+
+                                                    <InputText @bind-Value="ViewModel.Item.SystemInfo.GraphicCardName" disabled="@(RandomUserId is not null)" class="form-control" id="GraphicCardName" name="GraphicCardName" />
+                                                </div>
+
                                             </div>
 
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
 
-                                                <label for="CaseName">Case Name:</label>
+                                                    <label for="CaseManufacturer">Case Manufacturer:</label>
+                                                </div>
+                                                <div class="col-6">
+
+                                                    <InputSelect @bind-Value="ViewModel.Item.SystemInfo.CaseManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="CaseManufacturer"
+                                                                 placeholder="" name="CaseManufacturer">
+                                                        @foreach (var type in Enum.GetValues(typeof(SystemManufacturer)))
+                                                                {
+                                                            <option value="@type">@type</option>
+                                                                }
+                                                    </InputSelect>
+                                                </div>
+
                                             </div>
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
 
-                                                <InputText @bind-Value="ViewModel.Item.SystemInfo.CaseName" disabled="@(RandomUserId is not null)" class="form-control" id="CaseName" name="CaseName" />
+                                                    <label for="CaseName">Case Name:</label>
+                                                </div>
+                                                <div class="col-6">
+
+                                                    <InputText @bind-Value="ViewModel.Item.SystemInfo.CaseName" disabled="@(RandomUserId is not null)" class="form-control" id="CaseName" name="CaseName" />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-row">
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
 
-                                                <label for="CpuManufacturer">CPU Manufacturer:</label>
+                                                    <label for="CpuManufacturer">CPU Manufacturer:</label>
+                                                </div>
+                                                <div class="col-6">
+                                                    <InputSelect @bind-Value="ViewModel.Item.SystemInfo.CpuManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="CpuManufacturer"
+                                                                 placeholder="" name="CpuManufacturer">
+                                                        @foreach (var type in Enum.GetValues(typeof(CpuManufacturer)))
+                                                                {
+                                                            <option value="@type">@type</option>
+                                                                }
+                                                    </InputSelect>
+                                                </div>
                                             </div>
-                                            <div class="col-6">
-                                                <InputSelect @bind-Value="ViewModel.Item.SystemInfo.CpuManufacturer" disabled="@(RandomUserId is not null)" type="text" class="form-control" id="CpuManufacturer"
-                                                             placeholder="" name="CpuManufacturer">
-                                                    @foreach (var type in Enum.GetValues(typeof(CpuManufacturer)))
-                                                        {
-                                                        <option value="@type">@type</option>
-                                                        }
-                                                </InputSelect>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col-6">
+                                            <div class="form-row">
+                                                <div class="col-6">
 
-                                                <label for="CpuName">Cpu Name:</label>
-                                            </div>
-                                            <div class="col-6">
+                                                    <label for="CpuName">Cpu Name:</label>
+                                                </div>
+                                                <div class="col-6">
 
-                                                <InputText @bind-Value="ViewModel.Item.SystemInfo.CpuName" disabled="@(RandomUserId is not null)" class="form-control" id="CpuName" name="CpuName" />
+                                                    <InputText @bind-Value="ViewModel.Item.SystemInfo.CpuName" disabled="@(RandomUserId is not null)" class="form-control" id="CpuName" name="CpuName" />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        @if (RandomUserId is null)
-                                        {
-                                            <button type="submit" class="btn btn-primary">Update</button>
-                                        }
-                                    </EditForm>
+                                            @if (RandomUserId is null)
+                                            {
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            }
+                                        </EditForm>
+                                    }
+
                                 </div>
                             </div>
                         </div>

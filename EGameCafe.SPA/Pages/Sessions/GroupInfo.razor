@@ -1,4 +1,5 @@
 ﻿@inject IGroupInfoVm ViewModel
+@inject NavigationManager _navigationManager;
 
 <div id="groupInfo-section">
 
@@ -15,9 +16,11 @@
         </div>
 
         <div class="form-group">
-            <label for="email">Group Sharing Link :</label>
+            <label for="email">Group Sharing Code :</label>
             <InputText @bind-Value="ViewModel.Item.GroupInfo.SharingLink" disabled class="form-control" type="text" />
         </div>
+
+        <button class="btn btn-danger" @onclick="(()=>_navigationManager.NavigateTo(ViewModel.SharingLink))">Join Group</button>
 
         @*<div class="form-row">
             <div class="col">

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,14 +35,32 @@ namespace EGameCafe.SPA.Services
                 var requestMessage = new HttpRequestMessage(HttpMethod.Post, rout);
 
                 requestMessage.Headers.Authorization
-                    = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    = new AuthenticationHeaderValue("Bearer", token);
 
                 requestMessage.Content = new StringContent(modelAsJson);
 
                 requestMessage.Content.Headers.ContentType
-                    = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    = new MediaTypeHeaderValue("application/json");
 
                 var response = await _httpClient.SendAsync(requestMessage);
+
+                return response.DeserializeResponseMessageStatus().Result;
+            }
+            catch (Exception)
+            {
+                return CommonResults.InternalServerError("Internal Server Error", "سرور در حال بارگذاری می باشد");
+            }
+        }
+
+        public async Task<Result> AuthorizePostQueryAsync(string rout)
+        {
+            try
+            {
+                var token = await _currentUser.GetAuthToken();
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.PostAsync(rout, null);
 
                 return response.DeserializeResponseMessageStatus().Result;
             }
@@ -62,12 +81,12 @@ namespace EGameCafe.SPA.Services
                 var requestMessage = new HttpRequestMessage(HttpMethod.Put, rout);
 
                 requestMessage.Headers.Authorization
-                    = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    = new AuthenticationHeaderValue("Bearer", token);
 
                 requestMessage.Content = new StringContent(modelAsJson);
 
                 requestMessage.Content.Headers.ContentType
-                    = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    = new MediaTypeHeaderValue("application/json");
 
                 var response = await _httpClient.SendAsync(requestMessage);
 
