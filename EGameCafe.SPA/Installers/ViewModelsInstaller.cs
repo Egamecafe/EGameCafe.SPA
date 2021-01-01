@@ -22,6 +22,7 @@ namespace EGameCafe.SPA.Installers
             services.AddScoped<IGroupInfoVm, GroupInfoVm>();
             services.AddScoped<IIndexVm, IndexVm>();
             services.AddScoped<IFriendRequestVm, FriendRequestVm>();
+            services.AddScoped<IJoinGroupVm, JoinGroupVm>();
         }
     }
 }

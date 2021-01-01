@@ -5,7 +5,7 @@
 <section class="chat">
     <div class="header-chat">
         <i class="icon fa fa-user-o" aria-hidden="true"></i>
-        <p class="name" @onclick="@(()=>OnChatClick(ChatViewType.groupInfo))">@CurrentGroup.GroupName</p>
+        <p class="name" @onclick="@(()=>OnChatClick(ChatViewType.groupInfo))" style="cursor:pointer">@CurrentGroup.GroupName</p>
         <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
     </div>
     <div class="messages-chat">
@@ -29,7 +29,7 @@
                         <div class="online"></div>
                     </div>
                     <div class="text">
-                        <p style="font-size:11px; margin-bottom:3px">@msg.Username</p>
+                        <a href="@($"/index/{msg.UserId}")" style="font-size:11px; margin-bottom:3px">@msg.Username</a>
                         <p class="mb-0" style="font-size:19px">
                             @msg.MessageText
                         </p>
@@ -96,15 +96,11 @@
         }
     }
 
-    protected override void OnInitialized()
-    {
-        Random _rand = new Random();
-        CurrentUserId = _rand.Next(100, 1000000).ToString();
-    }
-
     protected override async Task OnInitializedAsync()
     {
         Username = await _currentUserService.GetUsername();
+        CurrentUserId = await _currentUserService.GetUserId();
+
 
         hubConnection = new HubConnectionBuilder()
         .WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:44376/chathub"))
